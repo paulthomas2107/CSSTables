@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1,user-scalable=no"
+    />
+    <title>JSON continued....</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/sorttable.js"></script>
+  </head>
+  <body>
+  
+    
+        <table id="outer">
+          <table class="sortable" id="myTable">
+            <thead>
+              <tr><th>Name</th><th>Surname</th><th>UUID</th><th>Username</th</tr>
+            </thead>
+            <tbody>  
+            </tbody>
+          </table>
+        </table>
+          
+
+    <script>
+
+      const url = "https://randomuser.me/api/?results=20";
+
+      fetch(url)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          // After data get...
+
+          let people = data.results;
+
+           for (var x = 0; x < 20; x++) {
+              
+              var htmlString = "<tr>";
+              htmlString += "<td>"+people[x].name.first+"</td>";
+              htmlString += "<td>"+people[x].name.last+"</td>";
+              htmlString += "<td>"+people[x].login.uuid+"</td>";
+              htmlString += "<td>"+people[x].login.username+"</td>";
+              htmlString += "</tr>"
+            
+              $("#myTable > tbody").append(htmlString);
+     
+     
+          }
+          
+          
+        });
+    </script>
+    <style>
+      table.sortable thead {
+        background-color: #eee;
+        border-style: ridge;
+        color: red;
+        font-weight: bold;
+         font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+        table.sortable tbody td {
+        border-color: grey;
+        border-style: ridge;
+        color: black;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+    </style>
+  </body>
+</html>
