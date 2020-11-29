@@ -9,65 +9,119 @@
     <title>JSON continued....</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./js/sorttable.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    
   </head>
   <body>
-  
+
+      <div id="navbar">
+        <a href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+      </div>
     
         <table id="outer">
           <table class="sortable" id="myTable">
             <thead>
-              <tr><th>Name</th><th>Surname</th><th>UUID</th><th>Username</th</tr>
+              <!--
+              <tr><th>Name</th><th>Surname</th><th>UUID</th><th>Username</th><th>Image</th</tr>
+              -->
+               <tr><th>ID</th><th>First</th><th>Last</th><th>Email</th><th>Notes</th</tr>
             </thead>
             <tbody>  
             </tbody>
           </table>
         </table>
+
+      
           
 
     <script>
 
-      const url = "https://randomuser.me/api/?results=20";
+      // When the user scrolls the page, execute myFunction 
+      window.onscroll = function() {myFunction()};
+
+      // Get the navbar
+      var navbar = document.getElementById("navbar");
+
+      // Get the offset position of the navbar
+      var sticky = navbar.offsetTop;
+
+      // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+      function myFunction() {
+        if (window.pageYOffset >= sticky) {
+          navbar.classList.add("sticky")
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      }
+      //const url = "https://randomuser.me/api/?results=20";
+
+
+      const url = "https://spreadsheets.google.com/feeds/list/1GlenBtbc0xO2aHQ0TP37wC6e-oCFLxCgAOGw2WtVAEQ/1/public/values?alt=json";
+
 
       fetch(url)
         .then(function (response) {
+          //console.debug(response);
           return response.json();
         })
         .then(function (data) {
-          // After data get...
+          //console.log(data.feed.entry);
+          let entry = data.feed.entry;
+           var htmlString = "<tr>";
+          for (let x = 0; x < entry.length; x++) {
+            console.log(entry[x]);
+            let id = entry[x].gsx$id.$t;
+            let first = entry[x].gsx$first.$t;
+            let last = entry[x].gsx$last.$t;
+            let email = entry[x].gsx$email.$t;
+            let notes = entry[x].gsx$notes.$t;
+            htmlString += "<td>"+id+"</td>";
+            htmlString += "<td>"+first+"</td>";
+            htmlString += "<td>"+last+"</td>";
+            htmlString += "<td>"+email+"</td>";
+            htmlString += "<td>"+notes+"</td>";
+            htmlString += "</tr>"
 
+          }
+
+/*
           let people = data.results;
 
-           for (var x = 0; x < 20; x++) {
+          console.debug(data.results);
+
+            var htmlString = "<tr>";
+
+           for (var x = 0; x < data.results.length; x++) {
               
-              var htmlString = "<tr>";
+             
               htmlString += "<td>"+people[x].name.first+"</td>";
               htmlString += "<td>"+people[x].name.last+"</td>";
               htmlString += "<td>"+people[x].login.uuid+"</td>";
               htmlString += "<td>"+people[x].login.username+"</td>";
+              htmlString += "<td><img src='" + people[x].picture.thumbnail + "'/></td>'"       
               htmlString += "</tr>"
+
+              
             
-              $("#myTable > tbody").append(htmlString);
-     
-     
-          }
+
+           }
+ 
+            */
+
+          $("#myTable > tbody").append(htmlString);
           
+         
+
+
+        
+
+
+
           
         });
     </script>
-    <style>
-      table.sortable thead {
-        background-color: #eee;
-        border-style: ridge;
-        color: red;
-        font-weight: bold;
-         font-family: Verdana, Geneva, Tahoma, sans-serif;
-      }
-        table.sortable tbody td {
-        border-color: grey;
-        border-style: ridge;
-        color: black;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-      }
-    </style>
+   
   </body>
 </html>
