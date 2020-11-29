@@ -20,18 +20,36 @@
         <a href="#contact">Contact</a>
       </div>
     
-        <table id="outer">
-          <table class="sortable" id="myTable">
+      
+        
+        <div>
+        <table style="display: inline-block;" id="outer1">
+          <table class="sortable" id="myTable1">
             <thead>
-              <!--
-              <tr><th>Name</th><th>Surname</th><th>UUID</th><th>Username</th><th>Image</th</tr>
-              -->
                <tr><th>ID</th><th>First</th><th>Last</th><th>Email</th><th>Notes</th</tr>
             </thead>
             <tbody>  
             </tbody>
           </table>
         </table>
+   
+
+      
+          <table style="display: inline-block;" id="outer2">
+          <table class="sortable" id="myTable2">
+            <thead>
+              <tr><th>Name</th><th>Surname</th><th>UUID</th><th>Username</th><th>Image</th</tr>
+            </thead>
+            <tbody>  
+            </tbody>
+          </table>
+        </table>
+
+        </div>
+     
+
+        
+
 
       
           
@@ -55,38 +73,22 @@
           navbar.classList.remove("sticky");
         }
       }
-      //const url = "https://randomuser.me/api/?results=20";
+      
+      processNameTable();
+
+      processPhotoTable();
 
 
-      const url = "https://spreadsheets.google.com/feeds/list/1GlenBtbc0xO2aHQ0TP37wC6e-oCFLxCgAOGw2WtVAEQ/1/public/values?alt=json";
+        function processPhotoTable() {
+              const url = "https://randomuser.me/api/?results=20";
+              fetch(url)
+          .then(function (response) {
+            //console.debug(response);
+            return response.json();
+          })
+          .then(function (data) {
 
 
-      fetch(url)
-        .then(function (response) {
-          //console.debug(response);
-          return response.json();
-        })
-        .then(function (data) {
-          //console.log(data.feed.entry);
-          let entry = data.feed.entry;
-           var htmlString = "<tr>";
-          for (let x = 0; x < entry.length; x++) {
-            console.log(entry[x]);
-            let id = entry[x].gsx$id.$t;
-            let first = entry[x].gsx$first.$t;
-            let last = entry[x].gsx$last.$t;
-            let email = entry[x].gsx$email.$t;
-            let notes = entry[x].gsx$notes.$t;
-            htmlString += "<td>"+id+"</td>";
-            htmlString += "<td>"+first+"</td>";
-            htmlString += "<td>"+last+"</td>";
-            htmlString += "<td>"+email+"</td>";
-            htmlString += "<td>"+notes+"</td>";
-            htmlString += "</tr>"
-
-          }
-
-/*
           let people = data.results;
 
           console.debug(data.results);
@@ -108,19 +110,57 @@
 
            }
  
-            */
-
-          $("#myTable > tbody").append(htmlString);
           
-         
 
+          $("#myTable2 > tbody").append(htmlString);
+          
+
+             });
+
+        }
+
+        function processNameTable() {
+
+          const url = "https://spreadsheets.google.com/feeds/list/1GlenBtbc0xO2aHQ0TP37wC6e-oCFLxCgAOGw2WtVAEQ/1/public/values?alt=json";
+
+
+        fetch(url)
+          .then(function (response) {
+            //console.debug(response);
+            return response.json();
+          })
+          .then(function (data) {
+            //console.log(data.feed.entry);
+            let entry = data.feed.entry;
+            var htmlString = "<tr>";
+            for (let x = 0; x < entry.length; x++) {
+              console.log(entry[x]);
+              let id = entry[x].gsx$id.$t;
+              let first = entry[x].gsx$first.$t;
+              let last = entry[x].gsx$last.$t;
+              let email = entry[x].gsx$email.$t;
+              let notes = entry[x].gsx$notes.$t;
+              htmlString += "<td>"+id+"</td>";
+              htmlString += "<td>"+first+"</td>";
+              htmlString += "<td>"+last+"</td>";
+              htmlString += "<td>"+email+"</td>";
+              htmlString += "<td>"+notes+"</td>";
+              htmlString += "</tr>"
+
+            }
 
         
 
+            $("#myTable1 > tbody").append(htmlString);
 
 
+
+        
+             });
+
+        }
           
-        });
+
     </script>
    
   </body>

@@ -44,3 +44,6 @@ table.sortable tbody td {
   color: black;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+div > table {
+  float: left;
+}
